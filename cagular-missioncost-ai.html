@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cagular MissionCost AI</title>
+<style>
+:root{--navy:#101a35;--blue:#2459d3;--cyan:#19b7c7;--bg:#f3f6fb;--ink:#18233b;--muted:#61708a;--line:#dce4f0;--white:#fff;--green:#157347;--amber:#8a5a00}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(125deg,#101a35,#203f82 70%,#147e9a);color:#fff;padding:28px max(18px,calc((100vw - 1180px)/2)) 24px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border:2px solid #69dce3;border-radius:13px;display:grid;place-items:center;font-size:24px}
+h1{font-size:clamp(25px,4vw,36px);margin:0;letter-spacing:-.7px}header p{max-width:850px;color:#e3edff;margin:9px 0 0}
+.wrap{max-width:1180px;margin:auto;padding:20px 16px 44px}.notice{background:#fff8e6;border:1px solid #efd48d;border-radius:12px;padding:13px 15px;margin-bottom:18px;color:#5e470b}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}.stat,.panel,.toolcard{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 8px #152b4d08}.stat{padding:15px}.stat small{display:block;color:var(--muted)}.stat strong{font-size:23px;display:block;letter-spacing:-.5px}
+.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}.tab{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fff;color:#33415e;white-space:nowrap;cursor:pointer;font-weight:650}.tab.active{background:var(--blue);border-color:var(--blue);color:white}
+.panel{padding:20px;margin-bottom:16px}.panel h2{margin:0 0 4px;font-size:22px}.sub{color:var(--muted);margin:0 0 17px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+label{display:block;font-weight:650;font-size:13px;margin-bottom:5px;color:#33415e}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cbd6e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit}input:focus,select:focus,textarea:focus{outline:2px solid #a9c5ff;border-color:var(--blue)}
+.field{margin-bottom:13px}.hint{font-size:12px;color:var(--muted);margin-top:4px}.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:700;cursor:pointer;background:var(--blue);color:white}.btn.secondary{background:#eaf0fc;color:#1b438f;border:1px solid #cddaf7}.btn.dark{background:var(--navy)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px}
+.result{background:#f5f8ff;border:1px solid #dce6fb;border-radius:11px;padding:15px;margin-top:15px}.result h3{margin:0 0 8px}.money{font-size:26px;font-weight:800;color:#173f98}.muted{color:var(--muted)}.tag{display:inline-block;border-radius:100px;background:#e9f2ff;color:#214b96;font-size:12px;font-weight:700;padding:3px 8px}.tag.warn{background:#fff2d6;color:#805400}.tag.good{background:#e2f5eb;color:#12633b}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:14px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}th{background:#f4f7fc;color:#45546f}td input{min-width:85px;padding:7px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.toolcard{padding:15px}.toolcard h3{margin:0 0 5px}.toolcard p{margin:0;color:var(--muted);font-size:14px}
+.links a{color:#164eb6;font-weight:650;text-decoration:none}.links a:hover{text-decoration:underline}.links li{margin:9px 0}.checklist label{display:flex;gap:9px;align-items:flex-start;font-weight:500;font-size:14px;margin:10px 0}.checklist input{width:auto;margin-top:5px}
+.progress{height:8px;border-radius:20px;background:#e4eaf4;overflow:hidden}.progress span{height:100%;display:block;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+footer{color:var(--muted);font-size:12px;padding:10px 2px}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid,.grid.two,.cards{grid-template-columns:1fr}.panel{padding:15px}.stat strong{font-size:20px}header{padding-top:22px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">◉</div><div><h1>CAGULAR MissionCost AI</h1><div style="color:#bcecf3;font-weight:700;letter-spacing:1.5px;font-size:11px">MISSION PLANNING • COST CONTROL • LAUNCH READINESS</div></div></div>
+<p>A free-first planning dashboard for a 1U CubeSat concept. Compare launch scenarios, estimate payload mass and power, track readiness, review funding pathways, and export your planning data.</p></header>
+<main class="wrap">
+<div class="notice"><strong>Planning tool—not a quote or engineering certification.</strong> All starter costs are editable illustrative assumptions unless marked as a linked official source. Launch costs vary widely and may exclude integration, testing, licensing, insurance, deployment, and operations. This tool does not certify a spacecraft or guarantee launch pricing.</div>
+<div class="stats">
+<div class="stat"><small>Current estimated project total</small><strong id="topTotal">$0</strong><small>Uses your editable cost inputs</small></div>
+<div class="stat"><small>Payload mass estimate</small><strong id="topMass">0 g</strong><small>Parts list subtotal</small></div>
+<div class="stat"><small>Payload power estimate</small><strong id="topPower">0 W</strong><small>Peak load estimate</small></div>
+<div class="stat"><small>Readiness checklist</small><strong id="topReady">0%</strong><small>Planning items checked</small></div>
+</div>
+<nav class="tabs" aria-label="Dashboard tools">
+<button class="tab active" data-tab="overview">Dashboard</button><button class="tab" data-tab="launch">Launch cost optimizer</button><button class="tab" data-tab="payload">Payload planner</button><button class="tab" data-tab="readiness">Readiness checklist</button><button class="tab" data-tab="orbit">Mission & orbit planner</button><button class="tab" data-tab="funding">Funding & launch finder</button>
+</nav>
+<section class="panel page" id="overview">
+<h2>Mission control dashboard</h2><p class="sub">A practical starting point for evaluating a 1U CubeSat technology-demonstration mission.</p>
+<div class="cards">
+<div class="toolcard"><h3>1. Launch cost optimizer</h3><p>Compare illustrative sponsored, rideshare, and dedicated launch scenarios, including add-on fees.</p><p style="margin-top:12px"><button class="btn secondary" onclick="showTab('launch')">Open calculator →</button></p></div>
+<div class="toolcard"><h3>2. Payload cost & mass</h3><p>Change component cost, mass, power, quantity, and status. Export a parts list for review.</p><p style="margin-top:12px"><button class="btn secondary" onclick="showTab('payload')">Open planner →</button></p></div>
+<div class="toolcard"><h3>3. Readiness manager</h3><p>Track design, documentation, licensing, testing, and launch-provider actions.</p><p style="margin-top:12px"><button class="btn secondary" onclick="showTab('readiness')">Open checklist →</button></p></div>
+<div class="toolcard"><h3>4. Mission & orbit planner</h3><p>Record candidate orbit assumptions and review contact-window and mission constraints.</p><p style="margin-top:12px"><button class="btn secondary" onclick="showTab('orbit')">Open planner →</button></p></div>
+<div class="toolcard"><h3>5. Funding & launch finder</h3><p>Visit official launch opportunity, NASA design, and open-source engineering resources.</p><p style="margin-top:12px"><button class="btn secondary" onclick="showTab('funding')">Open resources →</button></p></div>
+<div class="toolcard"><h3>Free-first operating model</h3><p>No paid API keys, no account required, and no data sent to a server. Your entries stay in this browser unless you export them.</p></div>
+</div>
+<div class="result"><h3>Recommended cost-control sequence</h3><ol><li>Define the mission objective before choosing hardware.</li><li>Set mass, power, dimensions, frequency, and data-rate constraints.</li><li>Compare launch pathways using current written quotes—not estimates alone.</li><li>Confirm launch-provider requirements before buying flight hardware.</li><li>Seek an eligible sponsored opportunity early; funding for building the spacecraft may still be needed.</li></ol></div>
+</section>
+<section class="panel page" id="launch" hidden>
+<h2>Launch cost optimizer</h2><p class="sub">Edit the assumptions below. The calculator compares cost scenarios, not confirmed launch offers.</p>
+<div class="grid">
+<div class="field"><label for="massLaunch">Spacecraft mass (kg)</label><input id="massLaunch" type="number" min="0" step=".1" value="1.2"></div>
+<div class="field"><label for="integration">Integration & deployment (USD)</label><input id="integration" type="number" min="0" value="15000"></div>
+<div class="field"><label for="testing">Launch-related testing (USD)</label><input id="testing" type="number" min="0" value="5000"></div>
+<div class="field"><label for="insurance">Insurance / risk allowance (USD)</label><input id="insurance" type="number" min="0" value="0"></div>
+<div class="field"><label for="travel">Travel, shipping & documentation (USD)</label><input id="travel" type="number" min="0" value="1500"></div>
+<div class="field"><label for="contingency">Contingency (%)</label><input id="contingency" type="number" min="0" max="100" value="15"></div>
+</div>
+<p class="hint">Base launch prices below are deliberately blank/zero until you enter a quote or your own assumption. Zero does not mean a launch is free.</p>
+<table><thead><tr><th>Pathway</th><th>Base launch / slot assumption (USD)</th><th>Availability / fit</th><th>Planning total</th></tr></thead><tbody>
+<tr><td><strong>Sponsored / educational</strong><br><span class="muted">Selection required</span></td><td><input id="sponsorBase" type="number" min="0" value="0"></td><td>Not guaranteed; eligibility rules apply</td><td id="sponsorTotal">$0</td></tr>
+<tr><td><strong>Commercial rideshare</strong><br><span class="muted">Provider quote required</span></td><td><input id="rideBase" type="number" min="0" value="25000"></td><td>Orbit, schedule, volume and interfaces must fit</td><td id="rideTotal">$0</td></tr>
+<tr><td><strong>Dedicated launch</strong><br><span class="muted">Usually not economical for 1U alone</span></td><td><input id="dedicatedBase" type="number" min="0" value="1000000"></td><td>Vehicle, orbit and mission-specific quote required</td><td id="dedicatedTotal">$0</td></tr>
+</tbody></table>
+<div class="result" id="launchResult" aria-live="polite"></div>
+<div class="actions"><button class="btn" onclick="exportJSON()">Export project JSON</button><button class="btn secondary" onclick="window.print()">Print / save PDF</button><button class="btn secondary" onclick="resetLaunch()">Reset launch assumptions</button></div>
+</section>
+<section class="panel page" id="payload" hidden>
+<h2>Payload parts, mass & power planner</h2><p class="sub">Starter examples are generic planning placeholders, not a recommended flight bill of materials. Replace them with sourced part data.</p>
+<div class="actions"><button class="btn" onclick="addPart()">+ Add component</button><button class="btn secondary" onclick="exportCSV()">Export parts CSV</button></div>
+<div style="overflow:auto"><table id="partsTable"><thead><tr><th>Component</th><th>Qty</th><th>Unit cost ($)</th><th>Unit mass (g)</th><th>Peak power (W)</th><th>Status</th><th>Subtotal</th><th></th></tr></thead><tbody id="partsBody"></tbody></table></div>
+<div class="result" id="partsResult"></div>
+<p class="hint">This planner totals user-entered figures only. It does not verify radiation tolerance, thermal behavior, vibration survival, electrical compatibility, or flight qualification.</p>
+</section>
+<section class="panel page" id="readiness" hidden>
+<h2>Launch readiness manager</h2><p class="sub">Check items as your team completes them. A checked list is not a certification or authorization.</p>
+<div class="progress"><span id="progressBar" style="width:0%"></span></div><p id="progressLabel" class="muted">0 of 14 items completed</p>
+<div class="checklist" id="checklist"></div>
+<div class="actions"><button class="btn secondary" onclick="clearChecks()">Clear checklist</button><button class="btn" onclick="exportJSON()">Export project JSON</button></div>
+</section>
+<section class="panel page" id="orbit" hidden>
+<h2>Mission & orbit planner</h2><p class="sub">Capture assumptions and identify questions to take to a mission analyst. These calculations are simple planning aids, not validated orbital analysis.</p>
+<div class="grid">
+<div class="field"><label for="altitude">Target altitude (km)</label><input id="altitude" type="number" value="500" min="100" max="100000" step="10"></div>
+<div class="field"><label for="inclination">Inclination (degrees)</label><input id="inclination" type="number" value="97.4" min="0" max="180" step=".1"></div>
+<div class="field"><label for="mission">Mission objective</label><select id="mission"><option>Technology demonstration</option><option>Earth observation</option><option>Radio / communications experiment</option><option>Store-and-forward data</option><option>Commercial broadband</option></select></div>
+<div class="field"><label for="dataRate">Target data rate (kbps)</label><input id="dataRate" type="number" value="9.6" min="0" step=".1"></div>
+<div class="field"><label for="contact">Desired ground contact per pass (minutes)</label><input id="contact" type="number" value="8" min="0" step=".5"></div>
+<div class="field"><label for="lifetime">Target mission lifetime (months)</label><input id="lifetime" type="number" value="12" min="0" step="1"></div>
+</div>
+<div class="actions"><button class="btn" onclick="calculateOrbit()">Review assumptions</button></div>
+<div class="result" id="orbitResult" aria-live="polite"></div>
+<div class="notice" style="margin-top:14px;margin-bottom:0">For actual orbit propagation, visibility, link budgets and launch compatibility, use a dedicated tool such as NASA GMAT and have the results reviewed by a qualified mission analyst.</div>
+</section>
+<section class="panel page" id="funding" hidden>
+<h2>Funding & launch opportunity finder</h2><p class="sub">Official links and free engineering software. Eligibility, deadlines and availability can change; confirm details on the source website.</p>
+<ul class="links">
+<li><a href="https://www.nasa.gov/cubesat-launch-initiative-introduction/" target="_blank" rel="noopener">NASA CubeSat Launch Initiative (CSLI)</a> — selected eligible U.S. educational/nonprofit CubeSat missions may receive a launch opportunity. NASA does not fund spacecraft development; selection is competitive.</li>
+<li><a href="https://www.nasa.gov/kennedy/launch-services-program/cubesat-launch-initiative/announcement-of-partnership-opportunity-for-cubesat-launch-initiative/" target="_blank" rel="noopener">NASA CSLI announcement and application updates</a> — check current program timing and application details.</li>
+<li><a href="https://www.nasa.gov/smallsat-institute/space-mission-design-tools/" target="_blank" rel="noopener">NASA SmallSat mission design tools</a> — public and open-source engineering tools.</li>
+<li><a href="https://software.nasa.gov/software/GSC-19640-1" target="_blank" rel="noopener">NASA GMAT (open-source mission analysis)</a> — orbit and trajectory analysis.</li>
+<li><a href="https://github.com/nasa/GMAT" target="_blank" rel="noopener">GMAT source code on GitHub</a>.</li>
+<li><a href="https://www.fcc.gov/satellite" target="_blank" rel="noopener">FCC satellite services</a> — U.S. satellite communications regulatory information.</li>
+<li><a href="https://www.fcc.gov/wireless/bureau-divisions/mobility-division/spectrum-management" target="_blank" rel="noopener">FCC spectrum management resources</a> — spectrum and authorization context.</li>
+<li><a href="https://www.nasa.gov/smallsat-institute/" target="_blank" rel="noopener">NASA Small Spacecraft Systems Virtual Institute</a> — technology state-of-the-art and design resources.</li>
+<li><a href="https://www.sbir.gov/" target="_blank" rel="noopener">U.S. SBIR/STTR program</a> — research funding opportunities for eligible small businesses when solicitations are open.</li>
+<li><a href="https://www.grants.gov/" target="_blank" rel="noopener">Grants.gov</a> — search federal funding announcements; eligibility is program-specific.</li>
+</ul>
+<div class="result"><h3>Important nonprofit note</h3><p>Do not assume a nonprofit automatically qualifies for a free launch. NASA CSLI selection depends on mission relevance, eligibility, proposal quality, schedule and available launch capacity. Check current announcements before building a budget around it.</p></div>
+</section>
+<footer>© Cagular MissionCost AI — local-first planning prototype. No paid API keys. Saved data remains in this browser session unless exported. Cost assumptions are not quotes. Not an engineering certification, regulatory determination, or launch guarantee.</footer>
+</main>
+<script>
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(n)||0);
+const num=id=>Math.max(0,Number(document.getElementById(id)?.value)||0);
+const checklistItems=[
+"Mission objective and success criteria documented",
+"Initial orbit and mission lifetime justified",
+"Spacecraft envelope and deployment interface checked",
+"Mass budget includes structure, harness and margin",
+"Power budget includes peak, average and eclipse cases",
+"Communications link budget drafted by qualified reviewer",
+"Frequency plan and authorization path identified",
+"Payload and bus interfaces documented",
+"Thermal and radiation environment reviewed",
+"Vibration, shock and environmental test plan identified",
+"Orbital debris mitigation and end-of-life plan reviewed",
+"Launch provider interface control document reviewed",
+"Required safety, licensing and export-control questions routed to specialists",
+"Ground station, operations and data handling plan documented"
+];
+let parts=[
+{name:"Onboard computer (placeholder)",qty:1,cost:100,mass:80,power:2,status:"Unverified estimate"},
+{name:"Radio / communications board (placeholder)",qty:1,cost:150,mass:100,power:4,status:"Unverified estimate"},
+{name:"Antenna (placeholder)",qty:1,cost:50,mass:30,power:0,status:"Unverified estimate"},
+{name:"Power subsystem (placeholder)",qty:1,cost:200,mass:180,power:0,status:"Unverified estimate"},
+{name:"Structure / mounting (placeholder)",qty:1,cost:100,mass:150,power:0,status:"Unverified estimate"}
+];
+function showTab(id){document.querySelectorAll('.page').forEach(e=>e.hidden=e.id!==id);document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('active',e.dataset.tab===id));if(id==="launch")calcLaunch();if(id==="payload")renderParts();updateStats();window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+["massLaunch","integration","testing","insurance","travel","contingency","sponsorBase","rideBase","dedicatedBase"].forEach(id=>document.getElementById(id).addEventListener('input',calcLaunch));
+function calcLaunch(){let mass=num('massLaunch'),common=num('integration')+num('testing')+num('insurance')+num('travel'),cont=num('contingency')/100;let scenarios=[["sponsor","Sponsored / educational",num('sponsorBase')],["ride","Commercial rideshare",num('rideBase')],["dedicated","Dedicated launch",num('dedicatedBase')]];let vals=[];scenarios.forEach(([id,name,base])=>{let pre=base+common,total=pre*(1+cont);document.getElementById(id+'Total').textContent=money(total);vals.push({name,total,base});});let best=vals.reduce((a,b)=>a.total<b.total?a:b);document.getElementById('launchResult').innerHTML='<h3>Scenario comparison</h3><p>Estimated shared fees before contingency: <strong>'+money(common)+'</strong>. Contingency: <strong>'+num('contingency')+'%</strong>.</p><p>Lowest numeric scenario: <strong>'+best.name+'</strong> at <span class="money">'+money(best.total)+'</span>.</p><p class="muted">This ranking is only meaningful if the entered base costs are real, comparable, and available to this mission. The sponsored scenario defaults to $0 only as a placeholder; it is not an offer of free launch.</p><p>Spacecraft mass entered: '+mass.toFixed(2)+' kg. Confirm provider-specific mass/volume limits and all additional fees.</p>';updateStats();}
+function resetLaunch(){document.getElementById('massLaunch').value=1.2;document.getElementById('integration').value=15000;document.getElementById('testing').value=5000;document.getElementById('insurance').value=0;document.getElementById('travel').value=1500;document.getElementById('contingency').value=15;document.getElementById('sponsorBase').value=0;document.getElementById('rideBase').value=25000;document.getElementById('dedicatedBase').value=1000000;calcLaunch();}
+function renderParts(){let body=document.getElementById('partsBody');body.innerHTML='';parts.forEach((p,i)=>{let tr=document.createElement('tr');tr.innerHTML='<td><input aria-label="Component name" value="'+esc(p.name)+'" data-i="'+i+'" data-k="name"></td><td><input type="number" min="0" value="'+p.qty+'" data-i="'+i+'" data-k="qty"></td><td><input type="number" min="0" value="'+p.cost+'" data-i="'+i+'" data-k="cost"></td><td><input type="number" min="0" value="'+p.mass+'" data-i="'+i+'" data-k="mass"></td><td><input type="number" min="0" step=".1" value="'+p.power+'" data-i="'+i+'" data-k="power"></td><td><select data-i="'+i+'" data-k="status"><option '+(p.status==="Unverified estimate"?"selected":"")+'>Unverified estimate</option><option '+(p.status==="Vendor quote"?"selected":"")+'>Vendor quote</option><option '+(p.status==="Verified specification"?"selected":"")+'>Verified specification</option><option '+(p.status==="To research"?"selected":"")+'>To research</option></select></td><td id="sub'+i+'">'+money(p.qty*p.cost)+'</td><td><button class="btn secondary" onclick="removePart('+i+')" aria-label="Remove component">×</button></td>';body.appendChild(tr);});body.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',e=>{let i=+e.target.dataset.i,k=e.target.dataset.k;parts[i][k]=k==="name"||k==="status"?e.target.value:Math.max(0,Number(e.target.value)||0);calcParts();}));calcParts();}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function addPart(){parts.push({name:"New component",qty:1,cost:0,mass:0,power:0,status:"To research"});renderParts();}
+function removePart(i){parts.splice(i,1);renderParts();}
+function calcParts(){let cost=0,mass=0,power=0;parts.forEach((p,i)=>{cost+=p.qty*p.cost;mass+=p.qty*p.mass;power+=p.qty*p.power;let c=document.getElementById('sub'+i);if(c)c.textContent=money(p.qty*p.cost);});document.getElementById('partsResult').innerHTML='<h3>Parts-list subtotal</h3><div class="grid"><div><span class="muted">Estimated cost</span><div class="money">'+money(cost)+'</div></div><div><span class="muted">Estimated mass</span><div class="money">'+mass.toLocaleString()+' g</div></div><div><span class="muted">Sum of listed peak power</span><div class="money">'+power.toFixed(1)+' W</div></div></div><p class="muted">Not included unless listed: structure, harness, connectors, fasteners, margin, test equipment, assembly, qualification, and integration.</p>';updateStats();}
+function renderChecklist(){let el=document.getElementById('checklist');el.innerHTML=checklistItems.map((s,i)=>'<label><input type="checkbox" data-check="'+i+'"> <span>'+s+'</span></label>').join('');el.querySelectorAll('input').forEach(c=>c.addEventListener('change',updateChecklist));}
+function updateChecklist(){let all=[...document.querySelectorAll('[data-check]')],n=all.filter(c=>c.checked).length,p=Math.round(n/all.length*100);document.getElementById('progressBar').style.width=p+'%';document.getElementById('progressLabel').textContent=n+' of '+all.length+' items completed ('+p+'%)';updateStats();}
+function clearChecks(){document.querySelectorAll('[data-check]').forEach(c=>c.checked=false);updateChecklist();}
+function calculateOrbit(){let h=num('altitude'),inc=num('inclination'),rate=num('dataRate'),contact=num('contact'),life=num('lifetime');let r=6371+h,period=2*Math.PI*Math.sqrt(Math.pow(r,3)/398600.4418)/60;document.getElementById('orbitResult').innerHTML='<h3>Basic orbit assumptions</h3><p>Altitude entered: <strong>'+h.toFixed(0)+' km</strong>. Inclination: <strong>'+inc.toFixed(1)+'°</strong>. Idealized circular-orbit period: <strong>'+period.toFixed(1)+' minutes</strong>.</p><p>Target data rate: <strong>'+rate.toLocaleString()+' kbps</strong>; desired contact/pass: <strong>'+contact.toFixed(1)+' minutes</strong>; lifetime: <strong>'+life+' months</strong>.</p><p class="muted">The period is a simplified two-body estimate using Earth mean radius and gravitational parameter. It does not predict ground-station visibility, eclipses, perturbations, collision risk, launch availability, or actual service coverage. A 1U satellite is not automatically capable of broadband or direct-to-phone service.</p>';}
+function updateStats(){let launchTotal=['sponsorTotal','rideTotal','dedicatedTotal'].map(id=>{let s=document.getElementById(id)?.textContent||'$0';return Number(s.replace(/[$,]/g,''))||0});let partsCost=parts.reduce((a,p)=>a+p.qty*p.cost,0),mass=parts.reduce((a,p)=>a+p.qty*p.mass,0),power=parts.reduce((a,p)=>a+p.qty*p.power,0);document.getElementById('topTotal').textContent=money(Math.min(...launchTotal)+partsCost);document.getElementById('topMass').textContent=mass.toLocaleString()+' g';document.getElementById('topPower').textContent=power.toFixed(1)+' W';let checks=[...document.querySelectorAll('[data-check]')];document.getElementById('topReady').textContent=(checks.length?Math.round(checks.filter(c=>c.checked).length/checks.length*100):0)+'%';}
+function projectData(){return {app:"Cagular MissionCost AI",version:"1.0 prototype",createdAt:new Date().toISOString(),notice:"Planning estimates only; not a quote, engineering certification, regulatory determination, or launch guarantee.",launch:{massKg:num('massLaunch'),integrationUSD:num('integration'),testingUSD:num('testing'),insuranceUSD:num('insurance'),travelUSD:num('travel'),contingencyPercent:num('contingency'),sponsoredBaseUSD:num('sponsorBase'),rideshareBaseUSD:num('rideBase'),dedicatedBaseUSD:num('dedicatedBase')},parts,orbit:{altitudeKm:num('altitude'),inclinationDeg:num('inclination'),mission:document.getElementById('mission').value,dataRateKbps:num('dataRate'),contactMinutes:num('contact'),lifetimeMonths:num('lifetime')},checklist:checklistItems.map((text,i)=>({text,complete:!!document.querySelector('[data-check="'+i+'"]')?.checked}))};}
+function exportJSON(){let blob=new Blob([JSON.stringify(projectData(),null,2)],{type:'application/json'});download(blob,'cagular-missioncost-project.json');}
+function exportCSV(){let rows=[['Component','Quantity','Unit Cost USD','Unit Mass g','Peak Power W','Status','Subtotal USD'],...parts.map(p=>[p.name,p.qty,p.cost,p.mass,p.power,p.status,p.qty*p.cost])];let csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');download(new Blob([csv],{type:'text/csv'}),'cagular-payload-parts.csv');}
+function download(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+renderChecklist();renderParts();calcLaunch();calculateOrbit();updateChecklist();
+</script>
+</body>
+</html>
